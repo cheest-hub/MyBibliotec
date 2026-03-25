@@ -14,7 +14,7 @@ export function PaginaInicio() {
   return (
     <div>
       <h1>Dashboard Principal</h1>
-      
+
       {/* --- INÍCIO DO COMPONENTE DE RESUMO --- */}
       <div style={{ display: 'flex', gap: '16px', marginBottom: '32px' }}>
         <div style={{ padding: '16px', backgroundColor: '#e3f2fd', borderRadius: '8px', flex: 1, textAlign: 'center', color: '#0d47a1' }}>
@@ -32,22 +32,30 @@ export function PaginaInicio() {
       </div>
       {/* --- FIM DO COMPONENTE DE RESUMO --- */}
 
-      <FormNovoLivro />
+      {/*<FormNovoLivro />*/}
+      <div className="dashboard-layout">
+        {/* COLUNA DA ESQUERDA: FORMULÁRIO */}
+        <aside className="sidebar">
+          <FormNovoLivro />
+        </aside>
 
-      <div style={{ marginTop: '32px' }}>
-        <h3>Adicionados Recentemente</h3>
-        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-          {livros.map(livro => (
-            <LivroCard 
-              key={livro.id}
-              id={livro.id} // <- Adicionámos o ID aqui para o botão do cartão funcionar!
-              titulo={livro.titulo}
-              autor={livro.autor}
-              status={livro.status}
-              avaliacao={livro.avaliacao}
-            />
-          ))}
-        </div>
+        {/* COLUNA DA DIREITA: CONTEÚDO */}
+        <main className="main-content">
+          <section className="stats-grid">
+            {/* Aqui vão os seus 3 cards de contagem */}
+            {livros.map(livro => (
+              <LivroCard
+                key={livro.id}
+                id={livro.id} // <- Adicionámos o ID aqui para o botão do cartão funcionar!
+                titulo={livro.titulo}
+                autor={livro.autor}
+                status={livro.status}
+                avaliacao={livro.avaliacao}
+              />
+            ))}
+          </section>
+
+        </main>
       </div>
     </div>
   );

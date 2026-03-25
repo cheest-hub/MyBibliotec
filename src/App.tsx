@@ -3,11 +3,13 @@ import { PaginaInicio } from './pages/PaginaInicio'
 import { PaginaLivros } from './pages/PaginaLivros'
 import { PaginaDetalhes } from './pages/PaginaDetalhes'
 import { PaginaNaoEncontrada } from './pages/PaginaNaoEncontrada'
+import Cabecalho from './components/Cabecalho'
 import './App.css'
 
 function App() {
   return (
     <>
+      <Cabecalho />
       {/* Menu de Navegação Global */}
       <nav style={{ padding: '16px', borderBottom: '1px solid #ccc', marginBottom: '20px' }}>
         <Link to="/" style={{ marginRight: '16px' }}>Dashboard</Link>

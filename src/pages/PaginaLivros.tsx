@@ -5,7 +5,7 @@ import { LivroCard } from '../components/LivroCard';
 export function PaginaLivros() {
   // 1. Puxamos a lista completa do nosso cofre global
   const { livros } = useContext(LivrosContext);
-  
+
   // 2. Criamos uma "memória local" para saber qual aba está ativa neste momento
   const [filtroAtual, setFiltroAtual] = useState<string>('todos');
 
@@ -18,49 +18,53 @@ export function PaginaLivros() {
   });
 
   return (
-    <div>
-      <h1>A Minha Biblioteca</h1>
+    <div className="main-content">
+      <header className="page-header">
+        <h1>A Minha Biblioteca</h1>
+        <p>Explore sua coleção de livros</p>
+      </header>
 
       {/* 4. Os Botões de Aba (Navegação dos Filtros) */}
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
-        <button 
+      <div className="filter-tabs">
+        <button
+          className={filtroAtual === 'todos' ? 'active' : ''}
           onClick={() => setFiltroAtual('todos')}
-          style={{ fontWeight: filtroAtual === 'todos' ? 'bold' : 'normal' }}
         >
           Todos
         </button>
-        <button 
+        <button
+          className={filtroAtual === 'quero ler' ? 'active' : ''}
           onClick={() => setFiltroAtual('quero ler')}
-          style={{ fontWeight: filtroAtual === 'quero ler' ? 'bold' : 'normal' }}
         >
           Quero Ler
         </button>
-        <button 
+        <button
+          className={filtroAtual === 'lendo' ? 'active' : ''}
           onClick={() => setFiltroAtual('lendo')}
-          style={{ fontWeight: filtroAtual === 'lendo' ? 'bold' : 'normal' }}
         >
           A Ler
         </button>
-        <button 
+        <button
+          className={filtroAtual === 'concluído' ? 'active' : ''}
           onClick={() => setFiltroAtual('concluído')}
-          style={{ fontWeight: filtroAtual === 'concluído' ? 'bold' : 'normal' }}
         >
           Concluído
         </button>
       </div>
 
       {/* 5. Renderizamos apenas a lista filtrada */}
-      <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+      <div className="books-grid">
         {livrosFiltrados.length === 0 ? (
           <p>Nenhum livro encontrado nesta categoria.</p>
         ) : (
           livrosFiltrados.map(livro => (
-            <LivroCard 
+            <LivroCard
               key={livro.id}
+              id={livro.id}
               titulo={livro.titulo}
               autor={livro.autor}
               status={livro.status}
-              avaliacao={livro.avaliacao} id={0}            />
+              avaliacao={livro.avaliacao} />
           ))
         )}
       </div>
