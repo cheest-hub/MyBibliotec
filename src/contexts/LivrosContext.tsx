@@ -11,6 +11,7 @@ export interface Livro {
 interface LivrosContextData {
   livros: Livro[];
   adicionarLivro: (livro: Livro) => void;
+  excluirLivro: (id: number) => void;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -20,12 +21,12 @@ export function LivrosProvider({ children }: { children: ReactNode }) {
   // 2. LER DO DISCO: Carregamos a lista de livros do localStorage quando o componente é montado
   const [livros, setLivros] = useState<Livro[]>(() => {
     const livrosGuardados = localStorage.getItem('@MyBibliotec:livros');
-    
+
     // Se encontrou dados antigos, transforma de texto para código (JSON.parse)
     if (livrosGuardados) {
       return JSON.parse(livrosGuardados);
     }
-    
+
     // Se for a primeira vez do utilizador, começa com uma lista vazia
     return [];
   });
@@ -40,8 +41,12 @@ export function LivrosProvider({ children }: { children: ReactNode }) {
     setLivros((livrosAnteriores) => [...livrosAnteriores, novoLivro]);
   };
 
+  const excluirLivro = (id: number) => {
+    setLivros((livrosAnteriores) => livrosAnteriores.filter(livro => livro.id !== id));
+  };
+
   return (
-    <LivrosContext.Provider value={{ livros, adicionarLivro }}>
+    <LivrosContext.Provider value={{ livros, adicionarLivro, excluirLivro }}>
       {children}
     </LivrosContext.Provider>
   );
