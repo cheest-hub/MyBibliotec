@@ -17,7 +17,7 @@ export function LivroCard({ id, titulo, autor, status, avaliacao }: LivroProps) 
       <p className="autor-text"><strong>Autor:</strong> {autor}</p>
 
       <div className="status-badge">
-        <strong>Status:</strong>
+        <p><strong>Status:</strong></p>
         <span className={`status-text ${status.replace(/\s+/g, '-')}`}>
           {status}
         </span>

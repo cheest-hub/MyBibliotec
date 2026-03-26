@@ -3,39 +3,51 @@ import { useParams, Link } from 'react-router-dom';
 import { LivrosContext } from '../contexts/LivrosContext';
 
 export function PaginaDetalhes() {
-  // 1. useParams extrai o ":id" que definimos lá no App.tsx nas nossas Rotas
-  const { id } = useParams(); 
+  const { id } = useParams();
   const { livros } = useContext(LivrosContext);
 
-  // 2. Procurar o livro. 
-  // Nota importante: O URL é sempre texto (string), mas o nosso ID foi guardado como número. 
-  // Por isso, usamos o Number(id) para garantir que a comparação funciona.
+  // Procuramos o livro na lista global
   const livroEncontrado = livros.find((livro) => livro.id === Number(id));
 
-  // 3. Se o utilizador digitar um ID falso no navegador, mostramos um erro amigável
+  // Caso o ID não exista (ex: o usuário digitou errado na URL)
   if (!livroEncontrado) {
     return (
-      <div style={{ textAlign: 'center', marginTop: '50px' }}>
+      <div className="empty-state">
         <h2>Livro não encontrado! 🕵️‍♂️</h2>
-        <Link to="/livros">Voltar para a biblioteca</Link>
+        <Link to="/livros" className="btn-detalhes">Voltar para a biblioteca</Link>
       </div>
     );
   }
 
-  // 4. Se encontrou, desenhamos a página com os detalhes
   const estrelasVisuais = '★'.repeat(livroEncontrado.avaliacao) + '☆'.repeat(5 - livroEncontrado.avaliacao);
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
-      <Link to="/livros" style={{ textDecoration: 'none', color: '#007BFF' }}>← Voltar</Link>
-      
-      <h1 style={{ marginTop: '16px' }}>{livroEncontrado.titulo}</h1>
-      <h3 style={{ color: '#666' }}>Por {livroEncontrado.autor}</h3>
-      
-      <div style={{ margin: '24px 0', padding: '16px', backgroundColor: '#f9f9f9', borderRadius: '4px', color: '#333' }}>
-        <p><strong>Status Atual:</strong> <span style={{ textTransform: 'capitalize' }}>{livroEncontrado.status}</span></p>
-        <p style={{ fontSize: '24px', color: '#f5c518', margin: '8px 0' }}>{estrelasVisuais}</p>
-        <p><strong>ID de Registo:</strong> {livroEncontrado.id}</p>
+    <div className="main-content">
+      <div className="detalhes-container">
+        <Link to="/livros" className="back-link">← Voltar para a lista</Link>
+
+        <header className="detalhes-header">
+          <h1>{livroEncontrado.titulo}</h1>
+          <p className="autor-nome">Por <strong>{livroEncontrado.autor}</strong></p>
+        </header>
+
+        <div className="detalhes-info-card">
+          <div className="info-item">
+            <strong>Status Atual:</strong>
+            <span className={`status-badge ${livroEncontrado.status.replace(/\s+/g, '-')}`}>
+              {livroEncontrado.status}
+            </span>
+          </div>
+
+          <div className="info-item">
+            <strong>Avaliação:</strong>
+            <p className="stars-display">{estrelasVisuais}</p>
+          </div>
+
+          <div className="info-item footer-info">
+            <small>ID de Registro: #{livroEncontrado.id}</small>
+          </div>
+        </div>
       </div>
     </div>
   );

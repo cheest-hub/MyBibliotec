@@ -1,6 +1,6 @@
-import { AvaliacaoEstrelas } from './AvaliacaoEstrelas';
 import { useState, useContext } from 'react';
 import { LivrosContext, type Livro } from '../contexts/LivrosContext';
+import { AvaliacaoEstrelas } from './AvaliacaoEstrelas';
 
 export function FormNovoLivro() {
   const { adicionarLivro } = useContext(LivrosContext);
@@ -8,7 +8,6 @@ export function FormNovoLivro() {
   const [titulo, setTitulo] = useState('');
   const [autor, setAutor] = useState('');
   const [status, setStatus] = useState<Livro['status']>('quero ler');
-
   const [avaliacao, setAvaliacao] = useState(0);
 
   const handleSubmit = (evento: React.FormEvent) => {
@@ -24,39 +23,57 @@ export function FormNovoLivro() {
       avaliacao
     });
 
+    // Resetar campos após o envio
     setTitulo('');
     setAutor('');
     setStatus('quero ler');
+    setAvaliacao(0); // Importante resetar as estrelas também!
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '400px', margin: '20px 0', padding: '16px', border: '1px solid #ddd', borderRadius: '8px' }}>
+    /* Trocamos o style manual pela classe 'sidebar-form' ou apenas usamos o seletor da sidebar */
+    <form onSubmit={handleSubmit} className="sidebar-form">
       <h3>Adicionar Novo Livro</h3>
 
-      <input
-        type="text"
-        placeholder="Título do livro"
-        value={titulo}
-        onChange={(e) => setTitulo(e.target.value)}
-        required
-      />
+      <div className="input-group">
+        <label>Título</label>
+        <input
+          type="text"
+          placeholder="Ex: O Alquimista"
+          value={titulo}
+          onChange={(e) => setTitulo(e.target.value)}
+          required
+        />
+      </div>
 
-      <input
-        type="text"
-        placeholder="Autor"
-        value={autor}
-        onChange={(e) => setAutor(e.target.value)}
-        required
-      />
-      <select value={status} onChange={(e) => setStatus(e.target.value as Livro['status'])}>
-        <option value="quero ler">Quero Ler</option>
-        <option value="lendo">A Ler</option>
-        <option value="concluído">Concluído</option>
-      </select>
+      <div className="input-group">
+        <label>Autor</label>
+        <input
+          type="text"
+          placeholder="Ex: Paulo Coelho"
+          value={autor}
+          onChange={(e) => setAutor(e.target.value)}
+          required
+        />
+      </div>
 
-      <AvaliacaoEstrelas nota={avaliacao} setNota={setAvaliacao} />
+      <div className="input-group">
+        <label>Status</label>
+        <select value={status} onChange={(e) => setStatus(e.target.value as Livro['status'])}>
+          <option value="quero ler">Quero Ler</option>
+          <option value="lendo">A Ler</option>
+          <option value="concluído">Concluído</option>
+        </select>
+      </div>
 
-      <button type="submit">Guardar Livro</button>
+      <div className="rating-container">
+        <label>Sua Avaliação:</label>
+        <AvaliacaoEstrelas nota={avaliacao} setNota={setAvaliacao} />
+      </div>
+
+      <button type="submit" className="btn-guardar">
+        Guardar Livro
+      </button>
     </form>
   );
 }
